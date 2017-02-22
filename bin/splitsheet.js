@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 var shelljs = require("shelljs");
 var jsonfile = require("jsonfile");
+var jimp = require("jimp");
+
 
 shelljs.config.verbose = true;
 
@@ -18,20 +20,24 @@ var frames = json.frames;
 var animations = json.animations;
 var imageFiles = json.images;
 
-console.log(animations);
+jimp.read(imageFiles[0]).then( (originalImage) => {
+    for (var animationName in animations) {
+        var animation = animations[animationName];
+        var frameIndex = animation.frames[0];
+        var frame = frames[frameIndex];
 
-for (var animationName in animations) {
-    var animation = animations[animationName];
+        var imageNameIndex = frame[4];
+        var imageFile = imageFiles[imageNameIndex];
 
-    var frameIndex = animation.frames[0];
-    var frame = frames[frameIndex];
+        var x = frame[0], y = frame[1], w = frame[2], h = frame[3];
 
-    var imageNameIndex = frame[4];
-    var imageFile = imageFiles[imageNameIndex];
+        originalImage.clone().crop(x, y, w, h).write(animationName + ".png");
 
-    var x = frame[0], y = frame[1], w = frame[2], h = frame[3];
+        console.log("Extracting image ", animationName, " from ", imageFile, " at ", x, y, w, h);
 
-    console.log("Extracting image ", animationName, " from ", imageFile, " at ", x, y, w, h);
+        //shelljs.exec(`magick ${imageFile} -crop ${w}x${h}+${x}+${y} ${animationName}.png`);
+    }
+}).catch(function (err) {
+    console.error(err);
+});
 
-    shelljs.exec(`magick ${imageFile} -crop ${w}x${h}+${x}+${y} ${animationName}.png`);
-}
