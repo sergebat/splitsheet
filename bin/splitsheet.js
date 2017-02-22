@@ -1,14 +1,14 @@
 #!/usr/bin/env node
+
 var shelljs = require("shelljs");
 var jsonfile = require("jsonfile");
 var Jimp = require("jimp");
-
 
 shelljs.config.verbose = true;
 
 var userArgs = process.argv.slice(2);
 if (userArgs.length === 0) {
-    console.log("splitshee spritesheetjson.json");
+    console.log("Usage: splitsheet spritesheet.json");
     process.exit(2);
 }
 
@@ -35,7 +35,9 @@ Jimp.read(imageFiles[0]).then( (originalImage) => {
         var hTarget = Math.max(h - yr, yr) * 2 + 50;
 
         console.log("Extracting image ", animationName, " from ", imageFile, " at ", x, y, w, h, xr, yr );
-        (new Jimp(wTarget, hTarget)).blit(originalImage, wTarget / 2 - xr, hTarget / 2 - yr, x, y, w, h).write(animationName + ".png");
+        (new Jimp(wTarget, hTarget))
+            .blit(originalImage, wTarget / 2 - xr, hTarget / 2 - yr, x, y, w, h)
+            .write(animationName + ".png");
     }
 }).catch(function (err) {
     console.error(err);
