@@ -81,7 +81,9 @@ shelljs.config.verbose = true;
 
 var userArgs = process.argv.slice(2);
 if (userArgs.length === 0) {
-    console.log("Usage: splitsheet spritesheet.json");
+    console.log("Usage: splitsheet <json_file> <json_format>");
+    console.log("Supported formats: createjs | pixijs");
+    console.log("I.e.: splitsheet spritesheet.json pixijs");
     process.exit(2);
 }
 
