@@ -12,8 +12,8 @@
   "author": "Sergey Batishchev",
   "license": "ISC",
   "dependencies": {
-    "jimp": "^0.2.27",
-    "jsonfile": "^2.4.0",
-    "shelljs": "^0.7.6"
+    "jimp": "^0.9.3",
+    "jsonfile": "^5.0.0",
+    "shelljs": "^0.8.3"
   }
 }
